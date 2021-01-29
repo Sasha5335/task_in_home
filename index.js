@@ -1,29 +1,42 @@
 'use strict';
 
-class Component {
-   constructor(selector) {
-      this.$el = document.querySelector(selector);
-   }
+const array = [];
+const form = document.getElementById('root-form');
+const btnSubmit = document.getElementById('btn-submit');
+const btnReset = document.getElementById('btn-reset');
+const btnDelete = document.getElementById('btn-del');
 
-   hide() {
-      this.$el.style.display = 'none';
-   }
+form.addEventListener('submit', pushForm);
+btnSubmit.addEventListener('click', renderForm);
+btnReset.addEventListener('click', resetForm);
+btnDelete.addEventListener('click', deleteForm);
 
-   show() {
-      this.$el.style.display = 'block';
-   }
+function pushForm(e) {
+   e.preventDefault();
+   const { target: { input: { value } } } = e;
+   array.push(String(value.trim()));
 }
 
-class Box extends Component {
-   constructor(options) {
-      super(options.selector);
-      this.$el.style.width = this.$el.style.height = options.size + 'px';
-      this.$el.style.background = options.color;
-   }
+
+function resetForm() {
+   form.reset();
 }
 
-const box1 = new Box({
-   selector: '#box1',
-   size: 100,
-   color: 'red'
-});
+function renderForm() {
+   const theLi = document.createElement('li');
+   array.map((item) => {
+      theLi.textContent = item;
+      this.parentNode.appendChild(theLi);
+   });
+}
+
+function deleteForm() {
+   const liElem = document.querySelectorAll('li');
+
+   liElem.forEach((element, i) => {
+      if (form.parentNode) {
+         i.parentNode.removeChild(element);
+      }
+   });
+   array.pop();
+}
