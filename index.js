@@ -1,42 +1,24 @@
 'use strict';
 
-const array = [];
-const form = document.getElementById('root-form');
-const btnSubmit = document.getElementById('btn-submit');
-const btnReset = document.getElementById('btn-reset');
-const btnDelete = document.getElementById('btn-del');
+function loadImage(src) {
+   const img = document.createElement('img');
+   img.setAttribute('src', src);
 
-form.addEventListener('submit', pushForm);
-btnSubmit.addEventListener('click', renderForm);
-btnReset.addEventListener('click', resetForm);
-btnDelete.addEventListener('click', deleteForm);
+   return new Promise((resolve, reject) => {
+      img.addEventListener('load', () => {
+         resolve(img);
+      });
 
-function pushForm(e) {
-   e.preventDefault();
-   const { target: { input: { value } } } = e;
-   array.push(String(value.trim()));
+      img.addEventListener('error', () => {
+         reject(new Error('Not img'));
+      });
+   })
 }
 
-
-function resetForm() {
-   form.reset();
-}
-
-function renderForm() {
-   const theLi = document.createElement('li');
-   array.map((item) => {
-      theLi.textContent = item;
-      this.parentNode.appendChild(theLi);
-   });
-}
-
-function deleteForm() {
-   const liElem = document.querySelectorAll('li');
-
-   liElem.forEach((element, i) => {
-      if (form.parentNode) {
-         i.parentNode.removeChild(element);
-      }
-   });
-   array.pop();
-}
+loadImage('https://i.pinimg.com/originals/3b/8a/d2/3b8ad2c7b1be2caf24321c852103598a.jpg')
+   .then((img) => {
+      document.body.append(img);
+   })
+   .catch((error) => {
+      console.log('error');
+   })
